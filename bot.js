@@ -28,7 +28,15 @@ export default class {
     }
 
     respondTo(message) {
-        return owmClient.weatherFor(message.text).then(response => {
+        let promise;
+
+        if (message.location) {
+            promise = owmClient.weatherForLocation(message.location.latitude, message.location.longitude);
+        } else {
+            promise = owmClient.weatherForText(message.text);
+        }
+
+        return promise.then(response => {
             const answer = [`Weather for the next days in ${response.city.name}:`].concat(response.list.map((forecast, i) => {
                 const day = moment.unix(forecast.dt).format('dddd');
                 return `${day}: ${this.messageForForecast(forecast.weather[0])}`;
