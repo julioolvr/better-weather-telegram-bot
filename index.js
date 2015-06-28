@@ -1,6 +1,6 @@
 require('babel/register');
 
-require('./app').listen(3000, function() {
+require('./app').listen(process.env.PORT, function() {
     var host = this.address().address;
     var port = this.address().port;
 
