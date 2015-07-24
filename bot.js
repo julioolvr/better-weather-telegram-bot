@@ -6,6 +6,10 @@ import moment from 'moment';
 const owmClient = new OwmClient();
 const telegramClient = new TelegramClient();
 
+function messageIsCommand(message) {
+    return message.text && message.text.startsWith('/');
+}
+
 export default class {
     messageForForecast(forecast) {
         if (forecast.id === 800) {
@@ -30,6 +34,10 @@ export default class {
     respondTo(message) {
         let promise;
 
+        if (messageIsCommand(message)) {
+            return telegramClient.sendMessage(this.respondToCommand(message.text), message.chat.id);
+        }
+
         if (message.location) {
             promise = owmClient.weatherForLocation(message.location.latitude, message.location.longitude);
         } else {
@@ -46,5 +54,12 @@ export default class {
         }).catch(() => {
             telegramClient.sendMessage('I couldn\'t find that place', message.chat.id);
         });
+    }
+
+    respondToCommand(command) {
+        switch (command) {
+        case '/start':
+            return 'Just tell me a place or send me a location and I\'ll tell you the weather!';
+        }
     }
 }
