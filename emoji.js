@@ -6,4 +6,4 @@ export default {
     unicodeForAlias(alias) {
         return db.find(emoji => emoji.aliases.some(a => a === alias)).emoji;
     }
-}
+};

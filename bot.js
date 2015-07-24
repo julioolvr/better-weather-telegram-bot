@@ -37,14 +37,14 @@ export default class {
         }
 
         return promise.then(response => {
-            const answer = [`Weather for the next days in ${response.city.name}:`].concat(response.list.map((forecast, i) => {
+            const answer = [`Weather for the next days in ${response.city.name}:`].concat(response.list.map((forecast) => {
                 const day = moment.unix(forecast.dt).format('dddd');
                 return `${day}: ${this.messageForForecast(forecast.weather[0])}`;
             })).join('\n');
 
             telegramClient.sendMessage(answer, message.chat.id);
-        }).catch((err) => {
+        }).catch(() => {
             telegramClient.sendMessage('I couldn\'t find that place', message.chat.id);
         });
     }
-};
+}

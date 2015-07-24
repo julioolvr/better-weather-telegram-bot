@@ -22,4 +22,4 @@ export default class {
     weatherForLocation(lat, lon) {
         return this.request(`http://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=3&APPID=${this.apiKey}`);
     }
-};
+}
